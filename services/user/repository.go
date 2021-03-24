@@ -6,7 +6,7 @@ import (
 )
 
 type User struct {
-	ID       primitive.ObjectID `json:"_id,omitempty"`
+	ID       primitive.ObjectID `bson:"_id" json:"id,omitempty"`
 	Email    string             `json:"email"`
 	Name     string             `json:"name"`
 	Password string             `json:"password"`
@@ -14,4 +14,7 @@ type User struct {
 
 type Repository interface {
 	CreateUser(ctx context.Context, user User) error
+	GetAll(ctx context.Context) ([]*User, error)
+	GetById(ctx context.Context, id string) (User, error)
+	DeleteById(ctx context.Context, id string) error
 }

@@ -21,10 +21,9 @@ func NewService(repository Repository, logger log.Logger) Service {
 
 func (s service) CreateUser(ctx context.Context, name string, email string, password string) (string, error) {
 	logger := log.With(s.logger, "method", "CreateUser")
-	id := primitive.NewObjectID()
 	user := User{
-		ID:       id,
-		Name: name,
+		ID:       primitive.NewObjectID(),
+		Name:     name,
 		Email:    email,
 		Password: password,
 	}
@@ -32,6 +31,6 @@ func (s service) CreateUser(ctx context.Context, name string, email string, pass
 		level.Error(logger).Log("err", err)
 		return "", err
 	}
-	logger.Log("Create user", id)
-	return "Success", nil
+	logger.Log("Create", "Success")
+	return "user create success", nil
 }
