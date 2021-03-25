@@ -8,14 +8,29 @@ import (
 	"net/http"
 )
 
-func NewHttpServer(ctx context.Context, endpoint Endpoint) http.Handler {
+func NewHttpServer(_ context.Context, endpoint Endpoint) http.Handler {
 
 	r := mux.NewRouter()
-	r.Use(common.CommonMiddleware)
 	userRoute := r.PathPrefix("/users").Subrouter()
+	userRoute.Use(common.CommonMiddleware)
 	userRoute.Methods("POST").Path("/new").Handler(httptransport.NewServer(
 		endpoint.CreateUser,
 		DecodeUserReq,
+		EncodeResponse,
+	))
+	userRoute.Methods("GET").Path("/").Handler(httptransport.NewServer(
+		endpoint.GetAllUser,
+		DecodeAll,
+		EncodeResponse,
+	))
+	userRoute.Methods("GET").Path("/{id}").Handler(httptransport.NewServer(
+		endpoint.GetUserById,
+		DecodeId,
+		EncodeResponse,
+	))
+	userRoute.Methods("DELETE").Path("/{id}").Handler(httptransport.NewServer(
+		endpoint.Delete,
+		DecodeId,
 		EncodeResponse,
 	))
 	return userRoute
