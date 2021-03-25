@@ -1,10 +1,11 @@
 package common
 
 import (
+	"os"
+
 	"github.com/go-kit/kit/log"
 	"github.com/go-kit/kit/log/level"
 	"github.com/spf13/viper"
-	"os"
 )
 
 func GetEnv(key string) string {
