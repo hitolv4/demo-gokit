@@ -2,13 +2,13 @@ package database
 
 import (
 	"context"
-	"github.com/go-kit/kit/log"
-	"github.com/go-kit/kit/log/level"
-	"github.com/memeoAmazonas/demo-2/common"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 	"os"
 	"time"
+
+	"github.com/go-kit/kit/log"
+	"github.com/go-kit/kit/log/level"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func GetDB() (*mongo.Database, error) {
@@ -22,8 +22,8 @@ func GetDB() (*mongo.Database, error) {
 			"caller", log.DefaultCaller,
 		)
 	}
-	uri := common.GetEnv("URL_BD")
-	dbName := common.GetEnv("DB_NAME")
+	uri := "mongodb://localhost:27017/" //! por alguna razon que desconosco con los test no carga el archivo .env
+	dbName := "gokitdbtest"
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(uri))
